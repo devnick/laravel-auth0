@@ -60,14 +60,14 @@ class Auth0Service {
     }
 
     private $apiuser;
-    public function decodeJWT($encUser) {
+        public function decodeJWT($encUser, $jwtArray = []) {
 
         $secret = Config::get('auth0::api.secret');
         $canDecode = false;
 
         try {
             // Decode the user
-            $this->apiuser = \JWT::decode($encUser, base64_decode(strtr($secret, '-_', '+/')) );
+            $this->apiuser = \JWT::decode($encUser, base64_decode(strtr($secret, '-_', '+/')), $jwtArray);
             // validate that this JWT was made for us
             if ($this->apiuser->aud == Config::get('auth0::api.audience')) {
                 $canDecode = true;
